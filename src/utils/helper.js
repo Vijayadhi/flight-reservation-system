@@ -1,4 +1,5 @@
 import airLineData from "../../airlines-logos-dataset-master/airlines";
+import axios from "axios";
 // tokenHelper
 export const fetchAccessToken = async () => {
     const clientId = import.meta.env.VITE_CLIENT_ID;
@@ -118,4 +119,46 @@ export const findLogo = (airlineCode) => {
         return airline.logo; // Return the logo URL if found
     }
     return 'images/default-logo.png'; // Return a default logo if not found
+};
+
+export const handlePayment = async () => {
+    try {
+        // Step 1: Create an order on the server
+        // const backendAPIUrl = import.meta.env.VITE_BACKEND_BASE_API
+        // const { data } = await axios.post(`${backendAPIUrl}/api/payment/order`, {
+        //     amount: 50000, // Amount in paise (e.g., 50000 paise = ₹500)
+        // });
+
+        const options = {
+            key: import.meta.env.VITE_RAZOR_PAY_KEY, // Enter the Key ID generated from the Dashboard
+            key_secret: import.meta.env.VITE_RAZOR_PAY_KEY_SECRET,
+            amount: "100", // Amount is in currency subunits. Default is paise (100 paise = 1 INR)
+            currency: "INR",
+            name: 'Your Company Name',
+            description: 'Test Transaction',
+            // order_id: "1234", // This is the order_id created in Step 1
+            handler: function (response) {
+                alert('Payment successful: ' + response.razorpay_payment_id);
+                // You can also call your backend to verify the payment here
+            },
+            prefill: {
+                name: 'Customer Name',
+                email: 'customer@example.com',
+                contact: '9999999999',
+            },
+            notes: {
+                address: 'address',
+            },
+            theme: {
+                color: '#F37254',
+            },
+        };
+
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+        console.log(razorpay);
+        
+    } catch (error) {
+        console.error('Error creating order:', error);
+    }
 };
