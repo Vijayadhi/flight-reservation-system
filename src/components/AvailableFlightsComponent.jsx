@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { findLogo, formatDuration } from '../utils/helper'; // Import the helper function
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast'; // For notifications
+import useSessionTimeout from '../utils/Session';
 
 const AvailableFlightsComponent = ({ flightOffers }) => {
     const navigate = useNavigate();
     const [sortConfig, setSortConfig] = useState({ key: null, direction: null, secondaryKey: null });
     const [compareList, setCompareList] = useState([]); // State to keep track of selected flights for comparison
 
+
+    useSessionTimeout(); // Call the hook to check session timeout
     // Sort function based on the selected key and direction
     const sortFlights = (flights, config) => {
         if (config.key) {

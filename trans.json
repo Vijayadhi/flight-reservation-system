@@ -1,110 +1,55 @@
 {
     "warnings": [
         {
+            "status": 200,
             "code": 0,
-            "title": "PricingOrFareBasisDiscrepancyWarning",
-            "detail": "Actual price and/or fare basis for some passengers is different from requested ones",
-            "status": 200
+            "title": "ContactInfoSsrNotAddedToBookingWarning",
+            "detail": "Unable to create some contact information SSR. Email and mobile phone number required."
         }
     ],
     "data": {
-        "type": "flight-offers-pricing",
+        "type": "flight-order",
+        "id": "eJzTd9f38okM8DIFAAuGAmQ%3D",
+        "queuingOfficeId": "NCE4D31SB",
+        "associatedRecords": [
+            {
+                "reference": "JLYPJ5",
+                "creationDate": "2024-10-05T08:18:00.000",
+                "originSystemCode": "GDS",
+                "flightOfferId": "1"
+            }
+        ],
         "flightOffers": [
             {
                 "type": "flight-offer",
-                "id": "29",
+                "id": "1",
                 "source": "GDS",
-                "instantTicketingRequired": false,
                 "nonHomogeneous": false,
-                "paymentCardRequired": false,
-                "lastTicketingDate": "2024-10-03",
+                "lastTicketingDate": "2024-10-05",
                 "itineraries": [
                     {
                         "segments": [
                             {
                                 "departure": {
-                                    "iataCode": "MAA",
-                                    "terminal": "4",
-                                    "at": "2024-10-09T09:40:00"
+                                    "iataCode": "HYD",
+                                    "at": "2024-10-09T20:20:00"
                                 },
                                 "arrival": {
-                                    "iataCode": "BOM",
+                                    "iataCode": "BLR",
                                     "terminal": "2",
-                                    "at": "2024-10-09T11:45:00"
+                                    "at": "2024-10-09T21:40:00"
                                 },
-                                "carrierCode": "AI",
-                                "number": "6606",
+                                "carrierCode": "UK",
+                                "number": "894",
                                 "aircraft": {
                                     "code": "320"
                                 },
-                                "operating": {
-                                    "carrierCode": "UK"
-                                },
-                                "duration": "PT2H5M",
-                                "id": "97",
+                                "duration": "PT1H20M",
+                                "id": "17",
                                 "numberOfStops": 0,
                                 "co2Emissions": [
                                     {
-                                        "weight": 77,
-                                        "weightUnit": "KG",
-                                        "cabin": "ECONOMY"
-                                    }
-                                ]
-                            },
-                            {
-                                "departure": {
-                                    "iataCode": "BOM",
-                                    "terminal": "2",
-                                    "at": "2024-10-09T13:00:00"
-                                },
-                                "arrival": {
-                                    "iataCode": "DEL",
-                                    "terminal": "3",
-                                    "at": "2024-10-09T15:15:00"
-                                },
-                                "carrierCode": "AI",
-                                "number": "677",
-                                "aircraft": {
-                                    "code": "32N"
-                                },
-                                "operating": {
-                                    "carrierCode": "AI"
-                                },
-                                "duration": "PT2H15M",
-                                "id": "98",
-                                "numberOfStops": 0,
-                                "co2Emissions": [
-                                    {
-                                        "weight": 90,
-                                        "weightUnit": "KG",
-                                        "cabin": "ECONOMY"
-                                    }
-                                ]
-                            },
-                            {
-                                "departure": {
-                                    "iataCode": "DEL",
-                                    "terminal": "3",
-                                    "at": "2024-10-09T17:55:00"
-                                },
-                                "arrival": {
-                                    "iataCode": "VGA",
-                                    "at": "2024-10-09T20:20:00"
-                                },
-                                "carrierCode": "AI",
-                                "number": "467",
-                                "aircraft": {
-                                    "code": "321"
-                                },
-                                "operating": {
-                                    "carrierCode": "AI"
-                                },
-                                "duration": "PT2H25M",
-                                "id": "99",
-                                "numberOfStops": 0,
-                                "co2Emissions": [
-                                    {
-                                        "weight": 123,
+                                        "weight": 47,
                                         "weightUnit": "KG",
                                         "cabin": "ECONOMY"
                                     }
@@ -115,23 +60,23 @@
                 ],
                 "price": {
                     "currency": "INR",
-                    "total": "19562.00",
-                    "base": "17451.00",
+                    "total": "4143.00",
+                    "base": "2748.00",
                     "fees": [
-                        {
-                            "amount": "0.00",
-                            "type": "SUPPLIER"
-                        },
                         {
                             "amount": "0.00",
                             "type": "TICKETING"
                         },
                         {
                             "amount": "0.00",
+                            "type": "SUPPLIER"
+                        },
+                        {
+                            "amount": "0.00",
                             "type": "FORM_OF_PAYMENT"
                         }
                     ],
-                    "grandTotal": "19562.00",
+                    "grandTotal": "4143.00",
                     "billingCurrency": "INR"
                 },
                 "pricingOptions": {
@@ -141,7 +86,7 @@
                     "includedCheckedBagsOnly": true
                 },
                 "validatingAirlineCodes": [
-                    "AI"
+                    "UK"
                 ],
                 "travelerPricings": [
                     {
@@ -150,57 +95,35 @@
                         "travelerType": "ADULT",
                         "price": {
                             "currency": "INR",
-                            "total": "19562",
-                            "base": "17451",
+                            "total": "4143.00",
+                            "base": "2748.00",
                             "taxes": [
+                                {
+                                    "amount": "885.00",
+                                    "code": "IN"
+                                },
+                                {
+                                    "amount": "144.00",
+                                    "code": "K3"
+                                },
                                 {
                                     "amount": "236.00",
                                     "code": "P2"
                                 },
                                 {
-                                    "amount": "467.00",
-                                    "code": "IN"
-                                },
-                                {
-                                    "amount": "898.00",
-                                    "code": "K3"
-                                },
-                                {
-                                    "amount": "510.00",
+                                    "amount": "130.00",
                                     "code": "YR"
                                 }
                             ],
-                            "refundableTaxes": "1724"
+                            "refundableTaxes": "1395.00"
                         },
                         "fareDetailsBySegment": [
                             {
-                                "segmentId": "97",
+                                "segmentId": "17",
                                 "cabin": "ECONOMY",
-                                "fareBasis": "SU1YX0II",
-                                "brandedFare": "ECOCOMF",
-                                "class": "S",
-                                "includedCheckedBags": {
-                                    "weight": 15,
-                                    "weightUnit": "KG"
-                                }
-                            },
-                            {
-                                "segmentId": "98",
-                                "cabin": "ECONOMY",
-                                "fareBasis": "GU1YXSII",
-                                "brandedFare": "ECOCOMF",
-                                "class": "G",
-                                "includedCheckedBags": {
-                                    "weight": 15,
-                                    "weightUnit": "KG"
-                                }
-                            },
-                            {
-                                "segmentId": "99",
-                                "cabin": "ECONOMY",
-                                "fareBasis": "LU1YXSII",
-                                "brandedFare": "ECOCOMF",
-                                "class": "L",
+                                "fareBasis": "V0GRPRYS",
+                                "brandedFare": "ECOYS",
+                                "class": "V",
                                 "includedCheckedBags": {
                                     "weight": 15,
                                     "weightUnit": "KG"
@@ -211,29 +134,60 @@
                 ]
             }
         ],
-        "bookingRequirements": {
-            "emailAddressRequired": true,
-            "mobilePhoneNumberRequired": true
-        }
+        "travelers": [
+            {
+                "id": "1",
+                "dateOfBirth": "2004-10-30",
+                "gender": "MALE",
+                "name": {
+                    "firstName": "vigneshwaran",
+                    "lastName": "jayaraman"
+                },
+                "contact": {
+                    "address": {
+                        "lines": [
+                            "697 alnff"
+                        ],
+                        "postalCode": "65412",
+                        "countryCode": "IN",
+                        "cityName": "aldnf"
+                    },
+                    "purpose": "STANDARD",
+                    "phones": [
+                        {
+                            "deviceType": "MOBILE",
+                            "countryCallingCode": "91",
+                            "number": "54565"
+                        }
+                    ]
+                }
+            }
+        ],
+        "ticketingAgreement": {
+            "option": "CONFIRM"
+        },
+        "automatedProcess": [
+            {
+                "code": "IMMEDIATE",
+                "queue": {
+                    "number": "0",
+                    "category": "0"
+                },
+                "officeId": "NCE4D31SB"
+            }
+        ]
     },
     "dictionaries": {
         "locations": {
-            "BOM": {
-                "cityCode": "BOM",
+            "HYD": {
+                "cityCode": "HYD",
                 "countryCode": "IN"
             },
-            "VGA": {
-                "cityCode": "VGA",
-                "countryCode": "IN"
-            },
-            "DEL": {
-                "cityCode": "DEL",
-                "countryCode": "IN"
-            },
-            "MAA": {
-                "cityCode": "MAA",
+            "BLR": {
+                "cityCode": "BLR",
                 "countryCode": "IN"
             }
         }
-    }
+    },
+    "email": "venerablevignesh@gmail.com"
 }

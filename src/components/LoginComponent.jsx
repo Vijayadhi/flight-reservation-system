@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import backIconGift from '../assets/icons/left-arrow.png';
@@ -8,28 +8,87 @@ function LoginComponent() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [logoutTimer, setLogoutTimer] = useState(null); // Keep track of logout timer
 
+    // Convert timeout string (e.g., '15m') to milliseconds
+    const convertTimeoutToMs = (timeout) => {
+        const unit = timeout.slice(-1); // Get the last character (unit)
+        const value = parseInt(timeout.slice(0, -1), 10); // Get the numerical value
+
+        switch (unit) {
+            case 'm': // minutes to ms
+                return value * 60 * 1000;
+            case 's': // seconds to ms
+                return value * 1000;
+            default:
+                return 0; // Unrecognized format
+        }
+    };
+
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_API}/user/user_login`, { email, password });
+            const { token, message, timeout } = response.data;
 
             // Store the token in session storage
-            const { token, message } = response.data;
             sessionStorage.setItem('token', token);
+            sessionStorage.setItem('timeOut', timeout);
+            sessionStorage.setItem('loginTime', Date.now()); // Store current time as login time
 
-            // Show success message using react-hot-toast
+
+            // Show success message
             toast.success(message);
 
-            // Redirect to the home page or dashboard after login
-            navigate('/dashboard');
+            // Convert timeout string to milliseconds
+            const timeoutInMs = convertTimeoutToMs(timeout);
+
+            // Set the session timeout for automatic logout
+            setSessionTimeout(timeoutInMs);
+
+            // Redirect to home page or dashboard
+            navigate('/');
 
         } catch (error) {
-            // Show error message using react-hot-toast
             toast.error('Invalid credentials. Please try again.');
         }
     };
+
+    // Set session timeout for auto-logout
+    const setSessionTimeout = (timeoutInMs) => {
+        if (timeoutInMs > 0) {
+            const timer = setTimeout(() => {
+                handleLogout(); // Logout when time expires
+            }, timeoutInMs);
+            setLogoutTimer(timer); // Store the timer so we can clear it later
+        }
+    };
+
+    // Handle user logout
+    const handleLogout = () => {
+        sessionStorage.removeItem("orderData");
+        sessionStorage.removeItem("selectedFlightData")
+        sessionStorage.removeItem("payment_response")
+        sessionStorage.removeItem("paymentId")
+        localStorage.removeItem("seatData")
+        sessionStorage.removeItem('token');
+
+        
+        toast.error('Your session has expired. Please log in again.');
+        navigate('/login');
+    };
+
+    // Handle component unmounting to clear any active timeout
+    useEffect(() => {
+        // Cleanup function to clear the timeout on unmount
+        return () => {
+            if (logoutTimer) {
+                clearTimeout(logoutTimer); // Clear any active timeout if the component unmounts
+            }
+        };
+    }, [logoutTimer]);
 
     return (
         <>
@@ -39,7 +98,7 @@ function LoginComponent() {
                     <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
                         <div className="max-w-md mx-auto">
                             <button className='button' onClick={() => navigate('/')}>
-                                <img src={backIconGift} alt="" className="absolute left-10 top-1/8 transform -translate-y-1/2 h-7 w-7 bold" />
+                                <img src={backIconGift} alt="Back" className="absolute left-10 top-1/8 transform -translate-y-1/2 h-7 w-7 bold" />
                             </button>
                             <div>
                                 <br />
@@ -53,10 +112,10 @@ function LoginComponent() {
                                                 autoComplete="off"
                                                 id="email"
                                                 name="email"
-                                                type="text"
+                                                type="email"
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
-                                                className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                                                className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600"
                                                 placeholder="Email address"
                                             />
                                             <label
@@ -74,7 +133,7 @@ function LoginComponent() {
                                                 type="password"
                                                 value={password}
                                                 onChange={(e) => setPassword(e.target.value)}
-                                                className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                                                className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600"
                                                 placeholder="Password"
                                             />
                                             <label

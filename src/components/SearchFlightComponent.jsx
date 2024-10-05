@@ -52,7 +52,7 @@ const SearchFlightComponent = () => {
     };
 
     const handleSearch = async (keyword, type) => {
-        const accessToken = await getAccessToken();
+        const accessToken = localStorage.getItem("accessToken");
         if (accessToken && keyword) {
             const url = `${import.meta.env.VITE_API_URL}/reference-data/locations?subType=CITY,AIRPORT&keyword=${keyword}`;
             try {
@@ -245,6 +245,7 @@ const SearchFlightComponent = () => {
                                 placeholder="Number of adults"
                                 required
                             />
+                            <p className='text-red-500'>Future changes are restriced</p>
                             <img src={addAdultGiftIcon} alt="Add Adult" className="absolute right-3 top-1/2 transform -translate-y-1/2 h-6 w-8" />
                         </div>
                     </div>

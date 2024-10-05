@@ -3,6 +3,10 @@ import Error404Component from "../components/Error404Component";
 import LoginComponent from "../components/LoginComponent";
 import PassengerDetailsComponent from "../components/PassengerDetailsComponet";
 import UserRegistrationComponent from "../components/UserRegistrationComponent";
+import BillComponent from "../components/BillComponent";
+import SeatMapComponent from "../components/SeatMapComponent";
+import MyBookingsComponent from "../components/MyBookingsComponent";
+import ProtectedRoute from "./ProtectedRoute";  // Import the ProtectedRoute
 
 export default [
     {
@@ -23,11 +27,22 @@ export default [
     },
     {
         path: '/get_passengerDetails',
-        element: <PassengerDetailsComponent/>
+        element: <ProtectedRoute element={<PassengerDetailsComponent />} />
     },
-    // Wildcard route to catch undefined paths
     {
-        path: '*', // This matches any route that doesn't exist
+        path: '/bill',
+        element: <ProtectedRoute element={<BillComponent />} />
+    },
+    {
+        path: '/seatMap',
+        element: <ProtectedRoute element={<SeatMapComponent />} />
+    },
+    {
+        path: '/my_bookings',
+        element: <ProtectedRoute element={<MyBookingsComponent />} />
+    },
+    {
+        path: '*',
         element: <Error404Component />
     }
 ];

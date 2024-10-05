@@ -58,7 +58,7 @@ function TopBarComponent() {
                                 <Link to="/profile" className="text-sm font-semibold leading-6 text-gray-900">
                                     Profile
                                 </Link>
-                                <Link to="/bookings" className="ml-6 text-sm font-semibold leading-6 text-gray-900">
+                                <Link to="/my_bookings" className="ml-6 text-sm font-semibold leading-6 text-gray-900">
                                     My Bookings
                                 </Link>
                                 <button

@@ -121,9 +121,12 @@ export const findLogo = (airlineCode) => {
     return 'images/default-logo.png'; // Return a default logo if not found
 };
 
-export const handlePayment = async () => {
+const uniqueString = Date.now().toString(36) + Math.random().toString(36).substring(2, 10);
+
+
+export const handlePayment = async (payload, onSuccessCallback) => {
     try {
-        // Step 1: Create an order on the server
+        // Step 1: Create an order on the server (commented out in your code)
         // const backendAPIUrl = import.meta.env.VITE_BACKEND_BASE_API
         // const { data } = await axios.post(`${backendAPIUrl}/api/payment/order`, {
         //     amount: 50000, // Amount in paise (e.g., 50000 paise = ₹500)
@@ -132,22 +135,32 @@ export const handlePayment = async () => {
         const options = {
             key: import.meta.env.VITE_RAZOR_PAY_KEY, // Enter the Key ID generated from the Dashboard
             key_secret: import.meta.env.VITE_RAZOR_PAY_KEY_SECRET,
-            amount: "100", // Amount is in currency subunits. Default is paise (100 paise = 1 INR)
+            amount: payload.amount * 100, // Amount is in currency subunits. Default is paise (100 paise = 1 INR)
             currency: "INR",
-            name: 'Your Company Name',
-            description: 'Test Transaction',
+            name: "Flight Reservation System",
+            description: 'Flight Reservation Order Payment',
             // order_id: "1234", // This is the order_id created in Step 1
             handler: function (response) {
+                // Payment successful
                 alert('Payment successful: ' + response.razorpay_payment_id);
-                // You can also call your backend to verify the payment here
+                sessionStorage.setItem("payment_response", JSON.stringify(response));
+
+                // Call the success callback with response
+                if (onSuccessCallback) {
+                    onSuccessCallback(response.razorpay_payment_id);
+                    axios.post(`${import.meta.env.VITE_BACKEND_BASE_API}/email/bookingConfiramtion`, payload)
+                
+
+                     // Pass the payment ID to the callback
+                }
             },
             prefill: {
-                name: 'Customer Name',
-                email: 'customer@example.com',
-                contact: '9999999999',
+                name: payload.name,
+                email: payload.email,
+                contact: payload.number,
             },
             notes: {
-                address: 'address',
+                address: payload.address,
             },
             theme: {
                 color: '#F37254',
@@ -156,9 +169,10 @@ export const handlePayment = async () => {
 
         const razorpay = new window.Razorpay(options);
         razorpay.open();
-        console.log(razorpay);
-        
+        return true;
+
     } catch (error) {
         console.error('Error creating order:', error);
+        return false; // Return false in case of an error
     }
 };

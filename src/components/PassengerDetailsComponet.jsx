@@ -1,11 +1,15 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { getAccessToken, formatDuration, handlePayment } from '../utils/helper';
+import { getAccessToken, formatDuration } from '../utils/helper';
 import { FaTrashAlt } from 'react-icons/fa'; // Import trash icon for removal
 import TopBarComponent from './TopBarComponent';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import useSessionTimeout from '../utils/Session';
+
 
 const PassengerDetailsComponent = () => {
+    useSessionTimeout();
     const [flightData, setFlightData] = useState(null);
     const [passengerDetails, setPassengerDetails] = useState([]);
     const [contactDetails, setContactDetails] = useState({
@@ -20,13 +24,14 @@ const PassengerDetailsComponent = () => {
         postal_code: '',
         tel_code: ''
     });
+
+    const navigate = useNavigate()
     const [flightOfferPricing, setFlightOfferPricing] = useState()
     useEffect(() => {
         const storedFlightData = sessionStorage.getItem('selectedFlightData');
         if (storedFlightData) {
             const parsedFlightData = JSON.parse(storedFlightData);
             setFlightData(parsedFlightData);
-            console.log(parsedFlightData);
 
             initializePassengerDetails(parsedFlightData.travelerPricings.length);
         }
@@ -51,9 +56,9 @@ const PassengerDetailsComponent = () => {
                     }
                 );
                 setFlightOfferPricing(res.data)
-                console.log(res.data);
             } catch (error) {
-                console.error('Error sending flight offers:', error);
+                toast.error(error.message)
+                // console.error('Error sending flight offers:', error);
             }
         };
         sendFlightOffers(flightData)
@@ -100,8 +105,8 @@ const PassengerDetailsComponent = () => {
         // Validate each passenger's details
         for (let i = 0; i < passengerDetails.length; i++) {
             const passenger = passengerDetails[i];
-            if (!passenger.firstName.trim() || !passenger.lastName.trim() || !passenger.gender || !passenger.dateOfBirth || !passenger.passportNumber.trim()) {
-                alert(`Please fill out all details for Passenger ${i + 1}.`);
+            if (!passenger.firstName.trim() || passenger.firstName.trim().length < 2 || !passenger.lastName.trim() || passenger.lastName.trim().length < 2 || !passenger.gender || !passenger.dateOfBirth || !passenger.passportNumber.trim() || passenger.passportNumber.trim().length < 2) {
+                alert(`Please fill out all details for Passenger ${i + 1} with a minimum length of 2 characters.`);
                 return false;
             }
         }
@@ -168,7 +173,6 @@ const PassengerDetailsComponent = () => {
             }
         };
 
-        console.log('Posting booking data: ', postData);
 
         try {
             const token = await getAccessToken();
@@ -178,12 +182,21 @@ const PassengerDetailsComponent = () => {
                 }
             });
 
-            console.log('Flight Order Response:', response);
+            response.data.email = contactDetails.email
+            const orderData = response.data
+            if (orderData) {
+                // console.log(response.data.id);
+                sessionStorage.setItem("orderData", JSON.stringify(response.data));
+
+
+                navigate('/bill')
+            }
+
             toast.success("flight orders")
-            handlePayment()
+            // const payload = pay
+            // handlePayment()
             // Handle successful booking response
         } catch (error) {
-            console.error('Error posting flight order:', error);
             alert('Failed to book flight. Please try again later.');
         }
     };
